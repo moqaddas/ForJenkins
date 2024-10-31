@@ -2,10 +2,12 @@ package steps;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import pages.AddEmployeePage;
 import utils.CommonMethods;
+import utils.DbReader;
 import utils.ExcelReader;
 
 import java.io.IOException;
@@ -14,19 +16,20 @@ import java.util.Map;
 
 public class AddEmployeeSteps extends CommonMethods {
     //AddEmployeePage addEmployeePage = new AddEmployeePage();
-
+    String employeeId;
+    String expectedFN;
+    String expectedMN;
+    String expectedLN;
     @When("user enters {string} and {string} and {string} in the name fields")
     public void user_enters_and_and_in_the_name_fields(String fn, String mn, String ln) {
-       // WebElement firstnameLocator = driver.findElement(By.id("firstName"));
-       // WebElement lastnameLocator = driver.findElement(By.id("lastName"));
-      //  WebElement middlenameLocator = driver.findElement(By.id("middleName"));
-
-      //  firstnameLocator.sendKeys(fn);
-      //  middlenameLocator.sendKeys(mn);
-      //  lastnameLocator.sendKeys(ln);
         sendText(fn,addEmployeePage.firstnameLocator);
         sendText(mn,addEmployeePage.middlenameLocator);
         sendText(ln,addEmployeePage.lastnameLocator);
+         expectedFN=fn;
+         expectedMN=mn;
+         expectedLN=ln;
+        // gets the id of employee from add employee page
+        employeeId  = addEmployeePage.employeeIDField.getAttribute("value");
 
     }
 
@@ -109,7 +112,15 @@ public class AddEmployeeSteps extends CommonMethods {
 
     @Then("user added successfully")
     public void user_added_successfully() {
-        System.out.println("test passed");
+        String query="select emp_firstname,emp_middle_name,emp_lastname from hs_hr_employees where employee_id="+employeeId;
+        List<Map<String,String>> dataFromDb= DbReader.fetch(query);
+        String actualFN=dataFromDb.get(0).get("emp_firstname");
+        String actualMN=dataFromDb.get(0).get("emp_middle_name");
+        String actualLN=dataFromDb.get(0).get("emp_lastname");
+        Assert.assertEquals(expectedFN,actualFN);
+        Assert.assertEquals(expectedMN,actualMN);
+        Assert.assertEquals(expectedLN,actualLN);
+
     }
 
 

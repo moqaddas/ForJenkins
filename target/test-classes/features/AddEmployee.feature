@@ -14,9 +14,9 @@ Feature: Add employee  in HRMS
     And user clicks on save button
     Then user added successfully
 
-  @params
+  @params @dbTesting
   Scenario: Add employee using parameter
-    When user enters "LED" and "ms" and "rahim" in the name fields
+    When user enters "Maher" and "ms" and "rahim" in the name fields
     And user clicks on save button
     Then user added successfully
 
