@@ -112,6 +112,13 @@ public class AddEmployeeSteps extends CommonMethods {
 
     @Then("user added successfully")
     public void user_added_successfully() {
+        System.out.println("Added ");
+
+    }
+
+
+    @Then("user added successfully and Verified from Backend")
+    public void userAddedSuccessfullyAndVerifiedFromBackend() {
         String query="select emp_firstname,emp_middle_name,emp_lastname from hs_hr_employees where employee_id="+employeeId;
         List<Map<String,String>> dataFromDb= DbReader.fetch(query);
         String actualFN=dataFromDb.get(0).get("emp_firstname");
@@ -120,9 +127,5 @@ public class AddEmployeeSteps extends CommonMethods {
         Assert.assertEquals(expectedFN,actualFN);
         Assert.assertEquals(expectedMN,actualMN);
         Assert.assertEquals(expectedLN,actualLN);
-
     }
-
-
-
 }
