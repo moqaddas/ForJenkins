@@ -101,6 +101,373 @@ when we execute the code
    verify
    test
 
+______________________________________________________________
+API
+
+Class 1 -
+
+What is API?
+
+example 1 - where you are a job seeker, sent an application to HR and HR takes it forward to HM, in this case HR is API.
+
+
+PNC
+Wells fargo
+chase
+citi
+bank of America
+
+CITI bank account - ATM (chase bank) - extra charges
+CITI bank account - ATM (citi bank) - no extra charges
+
+new user registration - adding a record in the DB
+
+transmitting the info - API
+
+client - server architecture
+
+1 tier architecture -
+
+presentation layer - what we see on the screen
+application layer - business logic is written
+data layer - the data has been saved
+
+when presentation, application and data layer are available at one place
+
+examples - calculator, Notepad, wordpad, notepad++ etc. (desktop based application, standalone applications)
+
+2 tier architecture
+when presentation layer is available at one place, and application layer and data layer is available at another place, this is called 2 tier architecture.
+
+example - subway, macdonalds, Walmart, Costco, bestbuy, dominozz etc
+
+
+3 tier architecture -
+when application is available at one place
+presentation is available at another place
+and data layer is available at 3rd place
+
+Instagram, amazon, skyscanner etc
+
+
+
+client - the one who makes a request
+server - the one who responds to the request
+API - the one who establishes the link in between client and server
+
+request
+response
+
+why do we need and test API's?
+
+to make system developed in different language communicate
+for security purpose
+
+why do we need to test API's?
+
+23ACBA
+23ACBA
+
+to identify the glitch in the API's, we need to test API's.
+
+UI
+API
+DB
+
+2 possible reasons -
+either DB is generating the wrong data
+or API is transferring incorrect data
+
+
+there are 2 types of API's.
+
+- API's
+- Webservices
+
+API's which are hosted over the  internet are called webservices.
+
+we have 2 types of web services
+REST - representational state transfer
+SOAP - simple object access protocol
+
+public and private API's.
+
+public API's which are accessible to everyone.
+private API's which are accessible only via authentication.
+
+
+process of authentication and authorization
+
+who are you?
+are you allowed?
+Show your ID?
+What access you have?
+
+authentication - it confirms the identity to grant permission
+authorization - it controls whether you are allowed to perform certain operations in the system.
+
+
+3 layers - UI, API, DB -  create, retrieve, update, delete CRUD operations
+
+
+non UI testing - postman
+
+how to perform CRUD operations in API testing -
+
+HTTP - hypertext transfer protocol
+it allows us to communicate over the internet
+
+to perform crud operations, HTTP has its own methods -
+
+POST - Creating a record
+GET - Retrieving a record
+PUT - Updating a record
+DELETE - Deleting a record
+
+REST webservices
+
+
+private API's -
+
+Stateful application - when the state of the browser memory is set to true, it is stateful application
+Stateless application - when the state  of the browser memory is set to false, it is stateless application
+
+
+DNS - domain name server
+
+
+194.234.786 IP address
+amazon.com
+
+
+syntaxtechs.net
+
+
+Swagger document - this document will give me all the information of what to test in application via API.
+
+private API's -
+stateless application - session ID
+
+Json web token -
+
+JWT -
+
+3 types of token -
+bearer token - we will use this token
+MAC token -
+Grants -
+
+token - it has 3 parts
+
+headers
+payload
+signature
+
+the first user we always create is admin user
+
+postman, ARC, SOAP UI, ranorax etc.
+
+
+why API?
+client server architecture? 1 tier, 2 tier, 3 tier architecture
+Why to test API's?
+API's and web services (REST and SOAP)
+public and private API's
+Authentication and Authorization
+HTTP and CRUD operations, POST, GET, PUT, DELETE
+DNS, IP addresses
+Swagger document
+JWT JSON WEB TOKEN - Bearer, MAC, Grants
+header, payload, signature
+
+Class 2 - Live
+
+- tokens
+
+We will perform CRUD operations
+
+only admin can perform these operations
+
+we need to create the admin to perform such operations
+
+swagger document will give me all the details
+
+
+Base URL - https://www.amazon.com
+end point - /electronics
+https://www.amazon.com
+end point - /clothes
+https://www.amazon.com
+end point - /mobile
+
+Base URI = base URL + end point
+uniform resource identifier
+
+client - prepare the request and send it
+server - respond to the request
+
+CREATE ADMIN USER -
+
+BASE URI = hrm.syntaxtechs.net/syntaxapi/api/createUser.php
+Type of method = POST
+Payload/body = in json format (key and value)
+we can't change the key but we can change the value in body
+
+{
+  "name": "kaylinadmin",
+  "email": "kaylinadmin321@kaylinworld.com",
+  "password": "Test@123"
+}
+
+
+content-type = application/json
+
+
+
+to send the request, I have to use POSTMAN
+
+
+after sending the request, we get the response and we check the status code
+
+201, 200 (successful operation)
+401,402,403,404,405(failure operation)
+
+now when we got admin, we can perform crud operations
+
+GENERATE TOKEN -
+
+BASE URI = hrm.syntaxtechs.net/syntaxapi/api/generateToken.php
+Type of method = POST
+Payload =
+
+{
+  "email": "kaylinadmin321@kaylinworld.com",
+  "password": "Test@123"
+}
+
+CREATE AN EMPLOYEE
+
+Base URI = hrm.syntaxtechs.net/syntaxapi/api/createEmployee.php
+Type of method = POST
+payload/body =
+
+{
+  "emp_firstname": "asana",
+  "emp_lastname": "lawrance",
+  "emp_middle_name": "ms",
+  "emp_gender": "F",
+  "emp_birthday": "1993-01-12",
+  "emp_status": "permanent",
+  "emp_job_title": "QA Manager"
+}
+
+content-type = application/json
+
+
+THUMB RULE - always perform retrieve operation after every operation
+
+we test our application against QA/test or staging, cert/prod env
+
+
+AGENDA is to test the API's -
+
+User story -
+Write a test case for API -
+When you send a request to create the employee
+Then you get 201 status code in case of successful request
+Then you get the same body in response as you sent in payload with request
+Then you compare the values and you validate the message of the response
+
+Swagger document -
+postman - prepare the request
+
+
+create request for ALL GET CALLS
+
+Class 3 Live
+
+CRUD operations -
+how to prepare the request -
+what is json format - key value pairs to pass in postman
+
+Swagger document provides us all the essential details about the API.
+
+
+Create - POST
+Retrieve - GET
+Update - PUT/PATCH
+Delete - Delete
+
+stateless application - TOKEN (JWT - Bearer token)
+12 hours is the duration of our token
+
+3 parts of token -
+header
+payload/body
+signature
+
+
+Response - we validate status code
+201 - for adding a record
+200 - successful api operation
+
+
+select the variable for environment and global variable to complete the URI against multiple environments
+
+we updated the token variable under globals.
+
+I run the collection, d it says, no test found
+
+
+
+AGENDA is to test the API's -
+
+User story -
+Write a test case for API -
+When you send a request to create the employee
+Then you get 201 status code in case of successful request - validate 201 status code
+Then you get the same body in response as you sent in payload with request - firstname, lastname, middlename
+Then you compare the values and you validate the message of the response  - key value pair validation
+
+assertion library - Chai library
+It supports javascript framework
+
+how to write function/method in JavaScript
+function myMethod(parameter1, parameter 2){
+//block of code
+}
+
+
+pm is the postman object which allows me to access all the methods from the postman library.
+pm.test (we are giving instructions to postman to test something)
+
+expect
+should
+assert
+
+using json object - we need to get the body in json object and then we will validate every key and value pair
+
+Then you get the same body in response as you sent in payload with request - firstname, lastname, middlename
+Then you compare the values and you validate the message of the response  - key value pair validation
+
+REST ASSURED - library which we use to automate API's.
+
+rest web service allows data to be sent in JSON format/object
+JSON means key and value pair
+
+REST is DSL (domain specific language)
+
+REST Assured follows behavioral driven development approach
+
+Given - prepare the request
+When - making the call/sending the request/hitting the end point
+Then - validation of response
+
+Hamcrest matchers -
+
+it allows us to validate the key vs value combination using native methods
+
+equalTo() is a native method we generally use
 
 
 
