@@ -6,6 +6,13 @@ import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.junit.Assert;
+import utils.APIConstants;
+import utils.APIPayloadConstants;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,37 +28,37 @@ public class APIStepsClass {
     @Given("a JWT bearer token is generated")
     public void a_jwt_bearer_token_is_generated() {
         request = given().
-                header("Content-Type","application/json").
+                header(APIConstants.HEADER_CONTENT_TYPE_KEY,APIConstants.HEADER_CONTENT_TYPE_VALUE).
                 body("{\n" +
                         "  \"email\": \"kaylinadmin321@kaylinworld.com\",\n" +
                         "  \"password\": \"Test@123\"\n" +
                         "}");
 
-        response = request.when().post("/generateToken.php");
+        response = request.when().post(APIConstants.GENERATE_TOKEN);
 
         token = "Bearer "+ response.jsonPath().getString("token");
         System.out.println(token);
     }
 
+    @Given("a request is prepared for creating the employee using json payload")
+    public void a_request_is_prepared_for_creating_the_employee_using_json_payload() {
+        request = given().
+                header(APIConstants.HEADER_CONTENT_TYPE_KEY,APIConstants.HEADER_CONTENT_TYPE_VALUE).
+                header(APIConstants.HEADER_AUTHORIZATION_KEY,token).
+                body(APIPayloadConstants.createEmployeeJsonPayload());
+    }
+
     @Given("a request is prepared for creating the employee")
     public void a_request_is_prepared_for_creating_the_employee() {
          request = given().
-                header("Content-Type","application/json").
-                header("Authorization",token).
-                body("{\n" +
-                        "  \"emp_firstname\": \"asana\",\n" +
-                        "  \"emp_lastname\": \"lawrance\",\n" +
-                        "  \"emp_middle_name\": \"ms\",\n" +
-                        "  \"emp_gender\": \"F\",\n" +
-                        "  \"emp_birthday\": \"1993-01-12\",\n" +
-                        "  \"emp_status\": \"permanent\",\n" +
-                        "  \"emp_job_title\": \"QA Manager\"\n" +
-                        "}");
+                header(APIConstants.HEADER_CONTENT_TYPE_KEY,APIConstants.HEADER_CONTENT_TYPE_VALUE).
+                header(APIConstants.HEADER_AUTHORIZATION_KEY,token).
+                body(APIPayloadConstants.createEmployeePayload());
     }
 
     @When("a POST call is made to create the employee")
     public void a_post_call_is_made_to_create_the_employee() {
-         response = request.when().post("/createEmployee.php");
+        response = request.when().post(APIConstants.CREATE_EMPLOYEE);
     }
 
     @Then("the status code for this request is {int}")
@@ -70,5 +77,65 @@ public class APIStepsClass {
         System.out.println("The employee id is:::::: " + employee_id);
         response.then().assertThat().
                 body("Employee.emp_firstname",equalTo("asana"));
+    }
+
+    @Given("a request is prepared to get the created employee")
+    public void a_request_is_prepared_to_get_the_created_employee() {
+        request = given().
+                header(APIConstants.HEADER_CONTENT_TYPE_KEY,APIConstants.HEADER_CONTENT_TYPE_VALUE).
+                header(APIConstants.HEADER_AUTHORIZATION_KEY,token).
+                queryParam("employee_id",employee_id);
+    }
+    @When("a GET call is made to get the created employee")
+    public void a_get_call_is_made_to_get_the_created_employee() {
+        response = request.when().get(APIConstants.GET_ONE_EMPLOYEE);
+    }
+    @Then("the status for for get call is {int}")
+    public void the_status_for_for_get_call_is(Integer statusCode) {
+        response.then().assertThat().statusCode(statusCode);
+    }
+
+    @Then("the employee has same employee id {string} as global empid")
+    public void the_employee_has_same_employee_id_as_global_empid(String empId) {
+        String temporaryEmpId = response.jsonPath().getString(empId);
+        //to compare both emp id's
+        Assert.assertEquals(employee_id, temporaryEmpId);
+    }
+
+    @Then("the data coming from the get call should equal to the data used in POST call")
+    public void the_data_coming_from_the_get_call_should_equal_to_the_data_used_in_post_call
+            (io.cucumber.datatable.DataTable dataTable) {
+        // it is coming from feature file
+        List<Map<String, String>> expectedData = dataTable.asMaps();
+        //it is coming from the response body which we need whole object
+        Map<String, String> actualData = response.jsonPath().get("employee");
+        //this is the time to compare  the values
+        for (Map<String, String> employeeData: expectedData
+             ) {
+            //to get all the unique keys
+            Set<String> keys = employeeData.keySet();
+            //but we need one key at a time to compare with value
+            for (String key:keys
+                 ) {
+                //to return the value against the key
+                String expectedValue  =  employeeData.get(key);
+                String actualValue = actualData.get(key);
+                Assert.assertEquals(expectedValue, actualValue);
+            }
+        }
+    }
+
+    @Given("a request is prepared usgin data {string} , {string} , {string} , {string} , {string} , {string} , {string}")
+    public void a_request_is_prepared_usgin_data
+            (String firstname, String lastname, String middlename,
+             String gender, String birthday, String status,
+             String jobtitle) {
+        request = given().
+                header(APIConstants.HEADER_CONTENT_TYPE_KEY,
+                        APIConstants.HEADER_CONTENT_TYPE_VALUE).
+                header(APIConstants.HEADER_AUTHORIZATION_KEY,token).
+                body(APIPayloadConstants.createEmployeeJsonPayloadDynamic
+                        (firstname,lastname,middlename,
+                                gender,birthday,status,jobtitle));
     }
 }
