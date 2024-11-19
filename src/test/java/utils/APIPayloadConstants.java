@@ -5,27 +5,26 @@ import org.json.JSONObject;
 public class APIPayloadConstants {
 
     public static String createEmployeePayload(){
-        String createEmployeePayload = "{\n" +
-                "  \"emp_firstname\": \"asana\",\n" +
-                "  \"emp_lastname\": \"lawrance\",\n" +
-                "  \"emp_middle_name\": \"ms\",\n" +
-                "  \"emp_gender\": \"F\",\n" +
-                "  \"emp_birthday\": \"1993-01-12\",\n" +
-                "  \"emp_status\": \"permanent\",\n" +
-                "  \"emp_job_title\": \"QA Manager\"\n" +
+        return "{\n" +
+                "  \"emp_firstname\": \"Moqaddas\",\n" +
+                "  \"emp_lastname\": \"Rahim\",\n" +
+                "  \"emp_middle_name\": \"JOJO\",\n" +
+                "  \"emp_gender\": \"M\",\n" +
+                "  \"emp_birthday\": \"2000-11-06\",\n" +
+                "  \"emp_status\": \"employed\",\n" +
+                "  \"emp_job_title\": \"developer\"\n" +
                 "}";
-        return createEmployeePayload;
     }
 
     public static String createEmployeeJsonPayload(){
         JSONObject obj = new JSONObject();
-        obj.put("emp_firstname","asana");
-        obj.put("emp_lastname","lawrance");
-        obj.put("emp_middle_name","ms");
-        obj.put("emp_gender","F");
-        obj.put("emp_birthday","1993-01-12");
-        obj.put("emp_status","permanent");
-        obj.put("emp_job_title","QA Manager");
+        obj.put("emp_firstname","Moqaddas");
+        obj.put("emp_lastname","Rahim");
+        obj.put("emp_middle_name","JOJO");
+        obj.put("emp_gender","M");
+        obj.put("emp_birthday","2000-11-06");
+        obj.put("emp_status","employed");
+        obj.put("emp_job_title","developer");
         return obj.toString();
     }
 

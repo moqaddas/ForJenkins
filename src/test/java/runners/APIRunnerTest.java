@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
         //when it is true, it generates step def which is missing
         //when it is false, it executes the code
         dryRun = false,
-        tags = "@dynamic",
+        tags = "@api2",
         plugin = {"pretty","html:target/cucumber.html","json:target/cucumber.json",
                 //to execute failed test cases one more time
                 "rerun:target/failed.txt"}
@@ -19,5 +19,5 @@ import org.junit.runner.RunWith;
 )
 
 
-public class APIRUnner {
+public class APIRunnerTest {
 }

@@ -17,14 +17,14 @@ public class DbReader {
         // Establish the connection between java program and the database
         try( Connection connection = DriverManager.getConnection(dbURL, userName, password);
              // takes your queries to the database and bring the results back to Java program
-             Statement statement = connection.createStatement();) {
+             Statement statement = connection.createStatement()) {
 
             ResultSet rows = statement.executeQuery(query);
             // Extracting all the info like column names from the statement
             ResultSetMetaData headerInfo = rows.getMetaData();
             // step 1 extract a row
             while (rows.next()) {
-                // create a map to store the info from that row into map
+                // create a map to store the info from that row into a map
                 Map<String, String> rowMap = new LinkedHashMap<>();
                 for (int i = 1; i <= headerInfo.getColumnCount(); i++) {
                     // extract all the column info and store it inside the map

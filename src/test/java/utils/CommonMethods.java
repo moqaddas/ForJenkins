@@ -22,15 +22,17 @@ public class CommonMethods extends PageIntializer {
     public static WebDriver driver;
 
     public void openBrowserAndLaunchApplication() {
-        switch (ConfigReader.read("browser")){
+        switch (ConfigReader.read("browser")) {
 
             case "Chrome":
                 ChromeOptions options = new ChromeOptions();
-                options.addArguments("--headless");
-                driver=new ChromeDriver();
+                options.setHeadless(true);
+                //options.addArguments("--headless");
+                driver = new ChromeDriver();
+
                 break;
             case "FireFox":
-                driver=new FirefoxDriver();
+                driver = new FirefoxDriver();
                 break;
             case "Edge":
                 driver = new EdgeDriver();
@@ -44,60 +46,62 @@ public class CommonMethods extends PageIntializer {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.get(ConfigReader.read("url"));
-        //this ,method will call all the objects
-       initializePageObjects();
+        //this, method will call all the objects
+        initializePageObjects();
     }
 
     public void closeBrowser() {
-        if(driver!= null) {
+        if (driver != null) {
             driver.quit();
         }
     }
 
-    public void sendText(String text, WebElement element){
+    public void sendText(String text, WebElement element) {
         element.clear();
         element.sendKeys(text);
     }
 
-    public void selectFromDropDown(WebElement dropDown, String visibleText){
-        Select sel =new Select(dropDown);
+    public void selectFromDropDown(WebElement dropDown, String visibleText) {
+        Select sel = new Select(dropDown);
         sel.selectByVisibleText(visibleText);
     }
-    public void selectFromDropDown(String value, WebElement dropDown ){
-        Select sel =new Select(dropDown);
+
+    public void selectFromDropDown(String value, WebElement dropDown) {
+        Select sel = new Select(dropDown);
         sel.selectByValue(value);
     }
-    public void selectFromDropDown( WebElement dropDown,int index ){
-        Select sel =new Select(dropDown);
+
+    public void selectFromDropDown(WebElement dropDown, int index) {
+        Select sel = new Select(dropDown);
         sel.selectByIndex(index);
     }
 
-    public WebDriverWait getwait(){
-        WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(Constants.EXPLICIT_WAIT));
-        return  wait;
+    public WebDriverWait getwait() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.EXPLICIT_WAIT));
+        return wait;
     }
 
-    public void waitForElementToBeClickAble(WebElement element){
+    public void waitForElementToBeClickAble(WebElement element) {
         getwait().until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void click(WebElement element){
+    public void click(WebElement element) {
         waitForElementToBeClickAble(element);
         element.click();
     }
 
-    public JavascriptExecutor getJSExecutor(){
+    public JavascriptExecutor getJSExecutor() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         return js;
     }
 
-    public void jsClick(WebElement element){
+    public void jsClick(WebElement element) {
         getJSExecutor().executeScript("arguments[0].click();", element);
     }
 
 
-    public byte[] takeScreenshot(String fileName){
-        //it accepts array of byte in cucumber for the screenshot
+    public byte[] takeScreenshot(String fileName) {
+        //it accepts an array of byte in cucumber for the screenshot
         TakesScreenshot ts = (TakesScreenshot) driver;
         byte[] picByte = ts.getScreenshotAs(OutputType.BYTES);
         File sourceFile = ts.getScreenshotAs(OutputType.FILE);
@@ -105,15 +109,15 @@ public class CommonMethods extends PageIntializer {
         try {
             FileUtils.copyFile(sourceFile,
                     new File(Constants.SCREENSHOT_FILEPATH +
-                            fileName+" "+
-                            getTimeStamp("yyyy-MM-dd-HH-mm-ss")+".png"));
+                            fileName + " " +
+                            getTimeStamp("yyyy-MM-dd-HH-mm-ss") + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return picByte;
     }
 
-    public String getTimeStamp(String pattern){
+    public String getTimeStamp(String pattern) {
         //this method will return the timestamp which we will add in ss method
         Date date = new Date();
         //12-01-1992-21-32-34
